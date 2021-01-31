@@ -8,8 +8,7 @@ COPY routes ./routes
 COPY index.js ./index.js
 COPY package.json ./package.json
 COPY package-lock.json ./package-lock.json
-
-RUN [ "npm", "install" ]
+COPY node_modules ./node_modules
 
 EXPOSE 3000
 
