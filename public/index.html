@@ -6,16 +6,32 @@
 </head>
 
 <body>
-  <h1>Express</h1>
-  <p>Welcome to Express</p>
-  <img src="images/js-logo.png">
+  <div>
+    <div class="header">
+      <h1>User Portal</h1>
 
+    </div>
 
-  Hello world
-  <div id="usersList"></div>
-  <button onclick="fetchUsers()">get users</button>
+    <div class="content">
 
-  <script src="javascripts/app.js" ></script>
+      <div class="contentInputField">
+        <p><b>Name: </b></p>
+        <input type="text" id="inputNameValue">
+        <p><b>Email: </b></p>
+        <input type="text" id="inputEmailValue">
+        <button onclick="sendData()">Submit</button>
+      </div>
+
+      <div class="contentUsersList">
+        <div id="usersList"></div>
+        <button onclick="printUsersList()">Get users</button>
+      </div>
+    </div>
+
+    <div class="footer">
+    </div>
+    <script src="javascripts/app.js"></script>
+  </div>
 </body>
 
 </html>

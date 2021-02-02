@@ -44,22 +44,29 @@ router.get('/', (req, resp, next) => {
   return resp.status(200).json(users)
 });
 
+function validateUserData(user) {
+  if (user.name == null || user.name === '') {
+    return { message: "user name is required"}
+  }
+  if (user.email == null || user.email === '') {
+    return { message: "user email is required"}
+  }
+}
 
 /* Create user */
 router.post('/', (req, resp, next) => {
 
   // validate user data
   const user = req.body
-  if (user.name == null) {
-    const error = { message: "user name is required"}
-    return resp.status(400).json(error)
-  }
-  if (user.email == null) {
-    const error = { message: "user email is required"}
+
+  const error = validateUserData(user)
+  if (error) {
+    console.log('error: ', error)
     return resp.status(400).json(error)
   }
 
   // create
+  console.log('creating user: ', user)
   const createdUser = usersService.createUser(user)
   return resp.status(200).json(createdUser)
 });
