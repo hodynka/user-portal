@@ -11,3 +11,34 @@ a {
   display: flex;
 
 }
+
+/* modal background */
+.modal {
+  display: none; 
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; 
+  background-color: rgba(0,0,0,0.4); 
+}
+
+/* modal content box*/
+.modal-content {
+  text-align: center;
+  background-color: #ffd59f;
+  margin: 15% auto; 
+  padding: 20px;
+  border: 1px solid #888;
+  width: 40%;
+}
+
+.modalBoxButton{
+  background:rgb(41, 38, 38);
+  color:#fff;
+  cursor:pointer;
+  border-radius:22px;
+  height:50px;
+}
