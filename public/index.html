@@ -3,34 +3,38 @@
 <head>
   <title>Express</title>
   <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 </head>
 
 <body>
-  <div id="generalSection">
-    <div class="header">
-      <h1>User Portal</h1>
-
-    </div>
-
-    <div class="content">
-
-      <div class="contentInputField">
-        <p><b>Name: </b></p>
-        <input type="text" id="inputNameValue">
-        <p><b>Email: </b></p>
-        <input type="text" id="inputEmailValue">
-        <button onclick="sendData()">Submit</button>
+  <div id='generalSection'>
+    <input type="checkbox" id="check">
+    <!--header area start-->
+    <header>
+      <label for="check">
+        <i class="fas fa-bars" id="sidebar_btn"></i>
+      </label>
+      <div class="left_area">
+        <h3>Coding<span>Snow</span></h3>
       </div>
-
-      <div class="contentUsersList">
-        <div id="usersList"></div>
-        <button onclick="printUsersList()">Get users</button>
+      <div class="right_area">
+        <a href="#" class="logout_btn">Logout</a>
       </div>
+    </header>
+    <!--header area end-->
+    <!--sidebar start-->
+    <div class="sidebar">
+      <center>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png" class="profile_image">
+        <h4>User</h4>
+      </center>
+      <a href="#" id="userPort"><i class="fas fa-address-book"></i><span>Users</span></a>
     </div>
-    <div class="footer">
+    <!--sidebar end-->
+    <div class="content" id="content">
+
     </div>
   </div>
-  
   <script src="javascripts/app.js"></script>
 </body>
 
