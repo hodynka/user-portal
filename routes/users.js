@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 
+const serverTimeout = 100
+
 const usersService = {
   users: [{ id: "u123123", name: "vasia", email: "vasia@gmail.com" }],
   createUser: function (user) {
@@ -40,8 +42,10 @@ const usersService = {
 
 /* GET all users */
 router.get('/', (req, resp, next) => {
-  const users = usersService.getUsers()
-  return resp.status(200).json(users)
+  setTimeout(() => {
+    const users = usersService.getUsers()
+    return resp.status(200).json(users)  
+  }, serverTimeout)
 });
 
 function validateUserData(user) {
@@ -56,70 +60,81 @@ function validateUserData(user) {
 /* Create user */
 router.post('/', (req, resp, next) => {
 
-  // validate user data
-  const user = req.body
+  setTimeout(() => {
+    // validate user data
+    const user = req.body
 
-  const error = validateUserData(user)
-  if (error) {
-    console.log('error: ', error)
-    return resp.status(400).json(error)
-  }
+    const error = validateUserData(user)
+    if (error) {
+      console.log('error: ', error)
+      return resp.status(400).json(error)
+    }
 
-  // create
-  console.log('creating user: ', user)
-  const createdUser = usersService.createUser(user)
-  return resp.status(200).json(createdUser)
+    // create
+    console.log('creating user: ', user)
+    const createdUser = usersService.createUser(user)
+    return resp.status(200).json(createdUser)
+  }, serverTimeout + 100)
+
 });
 
 
 /* Get user by id */
 router.get('/:id', (req, resp, next) => {
-  if (req.params.id != null) {
-    const user = usersService.getUserDetails(req.params.id)
-    if (user != null) {
-      return resp.status(200).json(user)
+  setTimeout(() => {
+    if (req.params.id != null) {
+      const user = usersService.getUserDetails(req.params.id)
+      if (user != null) {
+        return resp.status(200).json(user)
+      } else {
+        const error = { message: "user not found"}
+        return resp.status(404).json(error)
+      }
     } else {
-      const error = { message: "user not found"}
-      return resp.status(404).json(error)
-    }
-  } else {
-    const error = { message: "user id is required"}
-    return resp.status(400).json(error)
-  }
+      const error = { message: "user id is required"}
+      return resp.status(400).json(error)
+    }  
+  }, serverTimeout)
 });
 
 
 /* Update user by id */
 router.put('/:id', (req, resp, next) => {
-  if (req.params.id != null) {
-    const updateResult = usersService.updateUser(req.params.id, req.body)
-    if (updateResult != null) {
-      return resp.status(200).json(updateResult)
+  setTimeout(() => {
+    if (req.params.id != null) {
+      const updateResult = usersService.updateUser(req.params.id, req.body)
+      if (updateResult != null) {
+        return resp.status(200).json(updateResult)
+      } else {
+        const error = { message: "user not found"}
+        return resp.status(404).json(error)
+      }
     } else {
-      const error = { message: "user not found"}
-      return resp.status(404).json(error)
-    }
-  } else {
-    const error = { message: "user id is required"}
-    return resp.status(400).json(error)
-  }
+      const error = { message: "user id is required"}
+      return resp.status(400).json(error)
+    }  
+  }, serverTimeout + 100)
 });
 
 
 /* Delete user by id */
 router.delete('/:id', (req, resp, next) => {
-  if (req.params.id != null) {
-    const deleteResult = usersService.deleteUser(req.params.id, )
-    if (deleteResult) {
-      return resp.status(200).json()
+
+  setTimeout(() => {
+    if (req.params.id != null) {
+      const deleteResult = usersService.deleteUser(req.params.id, )
+      if (deleteResult) {
+        return resp.status(200).json()
+      } else {
+        const error = { message: "user not found"}
+        return resp.status(404).json(error)
+      }
     } else {
-      const error = { message: "user not found"}
-      return resp.status(404).json(error)
+      const error = { message: "user id is required"}
+      return resp.status(400).json(error)
     }
-  } else {
-    const error = { message: "user id is required"}
-    return resp.status(400).json(error)
-  }
+  }, serverTimeout + 100)
+  
 });
 
 
