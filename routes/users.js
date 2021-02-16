@@ -42,10 +42,8 @@ const usersService = {
 
 /* GET all users */
 router.get('/', (req, resp, next) => {
-  setTimeout(() => {
-    const users = usersService.getUsers()
-    return resp.status(200).json(users)  
-  }, serverTimeout)
+  const users = usersService.getUsers()
+  return resp.status(200).json(users)  
 });
 
 function validateUserData(user) {
