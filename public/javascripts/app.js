@@ -5,3 +5,11 @@ userPort.addEventListener('click', function () {
     loadUsersData()
 })
 
+const productsList = document.getElementById('products');
+productsList.addEventListener('click', function () {
+    document.getElementById("content").innerHTML = '';
+    printProductPage()
+    loadProductsData()
+
+})
+

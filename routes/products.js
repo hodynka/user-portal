@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const productService = {
-  products: [{ id: "q12397", name: "bag", price: "100" }],
+  products: [],
   createProduct: function (product) {
     console.log('ptoduct1: ' + product)
     product.id = 'q' + Math.ceil((Math.random() * 1000000))

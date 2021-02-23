@@ -25,7 +25,7 @@ function printUsersPage() {
     btnSendData.innerText = 'Submit';
     btnSendData.className = 'button';
     divButton.appendChild(btnSendData);
-    btnSendData.addEventListener('click', sendData)
+    btnSendData.addEventListener('click', sendDataUsers)
 
     let usersList = document.createElement('div');
     usersList.id = 'usersList'
@@ -64,7 +64,7 @@ function loadUsersData() {
         });
 }
 
-function sendData() {
+function sendDataUsers() {
     let userNameInput = document.getElementById("inputNameValue")
     let userEmailInput = document.getElementById("inputEmailValue")
 
