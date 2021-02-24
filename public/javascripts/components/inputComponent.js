@@ -33,6 +33,9 @@ function createInputComponent(inputValue, label, validators) {
         },
         hideValidationError: () => {
             popupDivSpanNode.style.display = 'none'
+        },
+        resetValue: () => {
+            inputlNode.value = '';
         }
     }
 }

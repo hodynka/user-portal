@@ -1,23 +1,12 @@
 function printUsersPage() {
     let content = document.getElementById("content");
 
-    let divInputName = document.createElement('div');
-    content.appendChild(divInputName);
-    let inputName = document.createElement('input');
-    inputName.id = 'inputNameValue';
-    let labelNode = document.createElement('label');
-    labelNode.innerText = 'Name: '
-    divInputName.appendChild(labelNode);
-    divInputName.appendChild(inputName);
+    const nameInputObj = createInputComponent('', 'Name:', [fieldValidator])
+    content.appendChild(nameInputObj.component);
 
-    let divInputEmail = document.createElement('div');
-    content.appendChild(divInputEmail);
-    let inputEmail = document.createElement('input');
-    inputEmail.id = 'inputEmailValue';
-    let labelEmailNode = document.createElement('label');
-    labelEmailNode.innerText = 'Email: '
-    divInputEmail.appendChild(labelEmailNode);
-    divInputEmail.appendChild(inputEmail)
+    const emailInputObj = createInputComponent('', 'Email:', [fieldValidator, emailFormatValidator])
+    content.appendChild(emailInputObj.component);
+
 
     let divButton = document.createElement('div');
     content.appendChild(divButton);
@@ -25,7 +14,15 @@ function printUsersPage() {
     btnSendData.innerText = 'Submit';
     btnSendData.className = 'button';
     divButton.appendChild(btnSendData);
-    btnSendData.addEventListener('click', sendDataUsers)
+    btnSendData.addEventListener('click', () => {
+        const v1 = nameInputObj.validate();
+        const v2 = emailInputObj.validate();
+        if (v1 && v2) {
+            sendDataUsers(nameInputObj.getValue(), emailInputObj.getValue());
+            nameInputObj.resetValue();
+            emailInputObj.resetValue();
+        }
+    })
 
     let usersList = document.createElement('div');
     usersList.id = 'usersList'
@@ -64,13 +61,11 @@ function loadUsersData() {
         });
 }
 
-function sendDataUsers() {
-    let userNameInput = document.getElementById("inputNameValue")
-    let userEmailInput = document.getElementById("inputEmailValue")
+function sendDataUsers(userNameInputValue, userEmailInputValue) {
 
     let userData = {
-        name: userNameInput.value,
-        email: userEmailInput.value,
+        name: userNameInputValue,
+        email: userEmailInputValue
     }
 
 

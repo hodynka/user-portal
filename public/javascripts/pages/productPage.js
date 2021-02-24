@@ -1,32 +1,23 @@
+const fieldValidatorProduct = {
+    errorMessage: "Field mustn't be empty",
+    isValid: (value) => value != null && value !== ''
+}
+const priceFormatValidator = {
+    errorMessage: "Invalid price format",
+    isValid: (value) => /^\d+\.?\d*$/.test(value)
+}
+
 function printProductPage() {
     let content = document.getElementById("content");
 
-    let divInputImg = document.createElement('div');
-    content.appendChild(divInputImg );
-    let inputImg = document.createElement('input');
-    inputImg.id = 'inputImgProductValue';
-    let labeImglNode = document.createElement('label');
-    labeImglNode.innerText = 'Image: '
-    divInputImg.appendChild(labeImglNode);
-    divInputImg.appendChild(inputImg);
-    
-    let divInputName = document.createElement('div');
-    content.appendChild(divInputName);
-    let inputName = document.createElement('input');
-    inputName.id = 'inputNameProductValue';
-    let labelNode = document.createElement('label');
-    labelNode.innerText = 'Name: '
-    divInputName.appendChild(labelNode);
-    divInputName.appendChild(inputName);
+    const imgInputObj = createInputComponent('', "Image:", [fieldValidatorProduct]);
+    content.appendChild(imgInputObj.component);
 
-    let divInputPrice = document.createElement('div');
-    content.appendChild(divInputPrice);
-    let inputPrice = document.createElement('input');
-    inputPrice.id = 'inputPriceProductValue';
-    let labelPriceNode = document.createElement('label');
-    labelPriceNode.innerText = 'Price: '
-    divInputPrice.appendChild(labelPriceNode);
-    divInputPrice.appendChild(inputPrice)
+    const nameInputObj = createInputComponent('', 'Name:', [fieldValidatorProduct]);
+    content.appendChild(nameInputObj.component);
+
+    const priceInputObj = createInputComponent('', 'Price:', [fieldValidatorProduct, priceFormatValidator]);
+    content.appendChild(priceInputObj.component);
 
     let divButton = document.createElement('div');
     content.appendChild(divButton);
@@ -34,22 +25,30 @@ function printProductPage() {
     btnSendData.innerText = 'Submit';
     btnSendData.className = 'button';
     divButton.appendChild(btnSendData);
-    btnSendData.addEventListener('click', sendDataProduct)
+    btnSendData.addEventListener('click', () => {
+        const v1 = nameInputObj.validate();
+        const v2 = priceInputObj.validate();
+        const v3 = imgInputObj.validate();
+        if (v1 && v2 && v3) {
+            sendDataProduct(imgInputObj.getValue(), nameInputObj.getValue(), priceInputObj.getValue());
+            imgInputObj.resetValue();
+            nameInputObj.resetValue();
+            priceInputObj.resetValue();
 
+        }
+    }
+    )
     let productsList = document.createElement('div');
     productsList.id = 'productsList'
     content.appendChild(productsList);
 }
 
-function sendDataProduct() {
-    let productNameInput = document.getElementById("inputNameProductValue");
-    let productPriceInput = document.getElementById("inputPriceProductValue");
-    let productImgInput = document.getElementById("inputImgProductValue");
+function sendDataProduct(productImgInput, productNameInput, productPriceInput) {
 
     let productData = {
-        img: productImgInput.value,
-        name: productNameInput.value,
-        price: productPriceInput.value,
+        img: productImgInput,
+        name: productNameInput,
+        price: productPriceInput,
     }
 
 
@@ -64,9 +63,6 @@ function sendDataProduct() {
         })
         .then(resp => {
             if (resp.ok) {
-                productImgInput.value = '';
-                productNameInput.value = '';
-                productPriceInput.value = '';
                 loadProductsData()
             } else {
                 console.log('error data:', resp.data)
@@ -76,51 +72,51 @@ function sendDataProduct() {
 
 function loadProductsData() {
     fetch('/products')
-    .then((response) => {
-        return response.json();
-    })
-    .then((data) => {
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
 
-        let productsList = document.getElementById('productsList')
-        productsList.innerHTML = null
+            let productsList = document.getElementById('productsList')
+            productsList.innerHTML = null
 
-        for (let i = 0; i < data.length; i++) {
+            for (let i = 0; i < data.length; i++) {
 
-            console.log('data: ' + JSON.stringify(data[i]))
+                console.log('data: ' + JSON.stringify(data[i]))
 
-            let productComponent = document.createElement("div");
-            productComponent.className = 'productCard'
-            let productImgDiv = document.createElement('div')
-            productComponent.appendChild(productImgDiv);
-            let productImg = document.createElement('img');
-            productImg.className = 'productImg'
-            productImg.src = data[i].img;
-            productImgDiv.appendChild(productImg)
+                let productComponent = document.createElement("div");
+                productComponent.className = 'productCard'
+                let productImgDiv = document.createElement('div')
+                productComponent.appendChild(productImgDiv);
+                let productImg = document.createElement('img');
+                productImg.className = 'productImg'
+                productImg.src = data[i].img;
+                productImgDiv.appendChild(productImg)
 
-            let productName = document.createElement('div')
-            productName.innerText = data[i].name;
-            productComponent.appendChild(productName);
+                let productName = document.createElement('div')
+                productName.innerText = data[i].name;
+                productComponent.appendChild(productName);
 
-            let productPrice = document.createElement('div');
-            productPrice.innerText = data[i].price;
-            productComponent.appendChild(productPrice)
-           
-            productsList.appendChild(productComponent);
+                let productPrice = document.createElement('div');
+                productPrice.innerText = data[i].price;
+                productComponent.appendChild(productPrice)
 
-            let btnDelete = document.createElement("button");
-            btnDelete.innerText = "Delete";
-            btnDelete.className = 'button';
-            productComponent.appendChild(btnDelete);
-            btnDelete.addEventListener('click', () => { deleteProduct(data[i].id) });
+                productsList.appendChild(productComponent);
 
-            let btnEdit = document.createElement("button");
-            btnEdit.innerText = "Edit";
-            btnEdit.className = 'button';
-            productComponent.appendChild(btnEdit);
-            btnEdit.addEventListener('click', () => { openEditModalBoxProduct(data[i].id, data[i].name, data[i].price, data[i].img) })
-        }
+                let btnDelete = document.createElement("button");
+                btnDelete.innerText = "Delete";
+                btnDelete.className = 'button';
+                productComponent.appendChild(btnDelete);
+                btnDelete.addEventListener('click', () => { deleteProduct(data[i].id) });
 
-    });
+                let btnEdit = document.createElement("button");
+                btnEdit.innerText = "Edit";
+                btnEdit.className = 'button';
+                productComponent.appendChild(btnEdit);
+                btnEdit.addEventListener('click', () => { openEditModalBoxProduct(data[i].id, data[i].name, data[i].price, data[i].img) })
+            }
+
+        });
 }
 
 function deleteProduct(id) {
@@ -129,14 +125,7 @@ function deleteProduct(id) {
     }).then(() => loadProductsData())
 }
 
-const fieldValidatorProduct = {
-    errorMessage: "Field mustn't be empty",
-    isValid: (value) => value != null && value !== ''
-}
-const priceFormatValidator = {
-    errorMessage: "Invalid price format",
-    isValid: (value) => /^\d+\.?\d*$/.test(value)
-}
+
 
 
 function openEditModalBoxProduct(id, name, price, img) {
