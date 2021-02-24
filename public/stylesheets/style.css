@@ -91,6 +91,15 @@ background:#0D9DBB
   padding-right: 10px;
 }
 
+i.fas.fa-shopping-basket{
+  line-height: 3;
+}
+
+
+i.fas.fa-address-book{
+  line-height: 3;
+}
+
 label #sidebar_btn{
   z-index: 1;
   color: #fff;
